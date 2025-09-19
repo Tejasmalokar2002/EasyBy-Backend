@@ -12,7 +12,7 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI(){
         return new OpenAPI()
-                .info(new Info().title("ShopEase API's").description("ShopEase E-commerce Application APIs")
+                .info(new Info().title("EastBy API's").description("EasyBy E-commerce Application APIs")
                         .version("1.0")
                         .contact(new Contact()
                                 .name("The EasyBy!")));

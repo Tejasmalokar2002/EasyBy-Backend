@@ -1,6 +1,4 @@
 package com.Shop.EasyBy.auth.controller;
-
-
 import com.Shop.EasyBy.auth.dto.UserDetailsDto;
 import com.Shop.EasyBy.auth.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/user")
+@CrossOrigin
 public class UserDetailController {
 
     @Autowired

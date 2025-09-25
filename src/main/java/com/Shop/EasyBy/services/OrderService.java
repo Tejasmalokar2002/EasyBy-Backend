@@ -7,6 +7,7 @@ import com.Shop.EasyBy.dto.OrderItemDetail;
 import com.Shop.EasyBy.dto.OrderRequest;
 import com.Shop.EasyBy.entities.*;
 import com.Shop.EasyBy.repositories.OrderRepository;
+import com.stripe.model.PaymentIntent;
 import jakarta.transaction.Transactional;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class OrderService {
     @Autowired
     ProductService productService;
 
-//    @Autowired
-//    PaymentIntentService paymentIntentService;
+    @Autowired
+    PaymentIntentService paymentIntentService;
 
 
     @Transactional
@@ -77,40 +78,42 @@ public class OrderService {
                 .paymentMethod(orderRequest.getPaymentMethod())
                 .orderId(savedOrder.getId())
                 .build();
-//        if(Objects.equals(orderRequest.getPaymentMethod(), "CARD")){
-//            orderResponse.setCredentials(paymentIntentService.createPaymentIntent(order));
-//        }
+
+        if ("CARD".equalsIgnoreCase(orderRequest.getPaymentMethod())) {
+            orderResponse.setCredentials(paymentIntentService.createPaymentIntent(order));
+        }
+
 
         return orderResponse;
 
     }
 
-//    public Map<String,String> updateStatus(String paymentIntentId, String status) {
-//
-//        try{
-//            PaymentIntent paymentIntent= PaymentIntent.retrieve(paymentIntentId);
-//            if (paymentIntent != null && paymentIntent.getStatus().equals("succeeded")) {
-//               String orderId = paymentIntent.getMetadata().get("orderId") ;
-//               Order order= orderRepository.findById(UUID.fromString(orderId)).orElseThrow(BadRequestException::new);
-//               Payment payment = order.getPayment();
-//               payment.setPaymentStatus(PaymentStatus.COMPLETED);
-//                payment.setPaymentMethod(paymentIntent.getPaymentMethod());
-//                order.setPaymentMethod(paymentIntent.getPaymentMethod());
-//                order.setOrderStatus(OrderStatus.IN_PROGRESS);
-//                order.setPayment(payment);
-//                Order savedOrder = orderRepository.save(order);
-//                Map<String,String> map = new HashMap<>();
-//                map.put("orderId", String.valueOf(savedOrder.getId()));
-//                return map;
-//            }
-//            else{
-//                throw new IllegalArgumentException("PaymentIntent not found or missing metadata");
-//            }
-//        }
-//        catch (Exception e){
-//            throw new IllegalArgumentException("PaymentIntent not found or missing metadata");
-//        }
-//    }
+    public Map<String,String> updateStatus(String paymentIntentId, String status) {
+
+        try{
+            PaymentIntent paymentIntent= PaymentIntent.retrieve(paymentIntentId);
+            if (paymentIntent != null && paymentIntent.getStatus().equals("succeeded")) {
+               String orderId = paymentIntent.getMetadata().get("orderId") ;
+               Order order= orderRepository.findById(UUID.fromString(orderId)).orElseThrow(BadRequestException::new);
+               Payment payment = order.getPayment();
+               payment.setPaymentStatus(PaymentStatus.COMPLETED);
+                payment.setPaymentMethod(paymentIntent.getPaymentMethod());
+                order.setPaymentMethod(paymentIntent.getPaymentMethod());
+                order.setOrderStatus(OrderStatus.IN_PROGRESS);
+                order.setPayment(payment);
+                Order savedOrder = orderRepository.save(order);
+                Map<String,String> map = new HashMap<>();
+                map.put("orderId", String.valueOf(savedOrder.getId()));
+                return map;
+            }
+            else{
+                throw new IllegalArgumentException("PaymentIntent not found or missing metadata");
+            }
+        }
+        catch (Exception e){
+            throw new IllegalArgumentException("PaymentIntent not found or missing metadata");
+        }
+    }
 
     public List<OrderDetails> getOrdersByUser(String name) {
         User user = (User) userDetailsService.loadUserByUsername(name);

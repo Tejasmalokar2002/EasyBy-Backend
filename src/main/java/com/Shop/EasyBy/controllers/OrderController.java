@@ -34,11 +34,11 @@ public class OrderController {
         return new ResponseEntity<>(orderResponse,HttpStatus.OK);
     }
 
-//    @PostMapping("/update-payment")
-//    public ResponseEntity<?> updatePaymentStatus(@RequestBody Map<String,String> request){
-//        Map<String,String> response = orderService.updateStatus(request.get("paymentIntent"),request.get("status"));
-//        return new ResponseEntity<>(response,HttpStatus.OK);
-//    }
+    @PostMapping("/update-payment")
+    public ResponseEntity<?> updatePaymentStatus(@RequestBody Map<String,String> request){
+        Map<String,String> response = orderService.updateStatus(request.get("paymentIntent"),request.get("status"));
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
 
     @PostMapping("/cancel/{id}")
     public ResponseEntity<?> cancelOrder(@PathVariable UUID id,Principal principal){

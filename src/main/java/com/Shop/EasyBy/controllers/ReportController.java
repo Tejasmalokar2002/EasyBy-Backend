@@ -16,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/report")
+@CrossOrigin
 public class ReportController {
 
     private final ReportParserService parserService;

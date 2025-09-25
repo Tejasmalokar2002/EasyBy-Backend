@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/category")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class CategoryController {
 
 

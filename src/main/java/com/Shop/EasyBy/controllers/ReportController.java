@@ -1,9 +1,6 @@
 package com.Shop.EasyBy.controllers;
 
-import com.Shop.EasyBy.entities.ReportInfo;
 import com.Shop.EasyBy.entities.ReportResponse;
-import com.Shop.EasyBy.entities.SectionRow;
-import com.Shop.EasyBy.services.ReportParserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,8 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/report")
